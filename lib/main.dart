@@ -44,7 +44,7 @@ class _WaterEjectScreenState extends State<WaterEjectScreen> {
   final AudioPlayer _player = AudioPlayer();
   late final Uint8List _tone = _generateTone();
   Timer? _stopTimer;
-  double _volume = 0.5;
+  double _volume = 0.6;
   bool _isPlaying = false;
 
   Future<void> _startTone() async {
@@ -129,7 +129,9 @@ class _WaterEjectScreenState extends State<WaterEjectScreen> {
     writeAscii(12, 'fmt ');
     writeAscii(36, 'data');
 
-    const amplitude = 0.18;
+    const fundamentalAmplitude = 0.22;
+    const secondHarmonicAmplitude = 0.055;
+    const thirdHarmonicAmplitude = 0.025;
     const fadeSamples = sampleRate ~/ 20;
     for (var sampleIndex = 0;
         sampleIndex < sampleRate * durationSeconds;
@@ -138,11 +140,11 @@ class _WaterEjectScreenState extends State<WaterEjectScreen> {
       final remaining = sampleRate * durationSeconds - sampleIndex - 1;
       final fadeOut = math.min(1.0, remaining / fadeSamples);
       final envelope = math.min(fadeIn, fadeOut);
-      final sample = (math.sin(2 * math.pi * _frequencyHz * sampleIndex / sampleRate) *
-              amplitude *
-              envelope *
-              32767)
-          .round();
+      final phase = 2 * math.pi * _frequencyHz * sampleIndex / sampleRate;
+      final tone = math.sin(phase) * fundamentalAmplitude +
+          math.sin(2 * phase) * secondHarmonicAmplitude +
+          math.sin(3 * phase) * thirdHarmonicAmplitude;
+      final sample = (tone * envelope * 32767).round();
       header.setInt16(44 + sampleIndex * bytesPerSample, sample, Endian.little);
     }
 
@@ -221,8 +223,8 @@ class _WaterEjectScreenState extends State<WaterEjectScreen> {
                         child: Slider(
                           value: _volume,
                           min: 0.1,
-                          max: 0.7,
-                          divisions: 6,
+                          max: 0.8,
+                          divisions: 7,
                           label: '${(_volume * 100).round()}%',
                           onChanged: _changeVolume,
                         ),

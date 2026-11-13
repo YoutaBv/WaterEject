@@ -1,8 +1,9 @@
 # Water Eject
 
-Aplicación Flutter para Android que reproduce un tono de 165 Hz durante un
-máximo de 30 segundos. El tono WAV se genera una sola vez en memoria y se repite
-con `audioplayers`; el volumen inicial es moderado y puede ajustarse.
+Aplicación Flutter para Android que reproduce un tono de 165 Hz con armónicos
+suaves durante un máximo de 30 segundos. El tono WAV se genera una sola vez en
+memoria y se repite con `audioplayers`; el volumen inicial es moderado y puede
+ajustarse. Incluye un icono de gota y ondas sonoras.
 
 > El sonido no garantiza eliminar agua del interior del teléfono ni reparar
 > daños. No uses la aplicación con auriculares ni mantengas el volumen al
@@ -48,31 +49,25 @@ depuración USB activada, puedes probarlo con `flutter devices` y `flutter insta
 
 ## Crear el QR de descarga
 
-Primero sube el APK a un alojamiento público, por ejemplo una publicación de
-GitHub Releases, y copia la URL HTTPS directa del archivo. Después:
+El repositorio incluye `public\WaterEject_QR.png`, que apunta a la descarga
+directa del APK en Vercel. Para cambiar el destino del QR, pasa la nueva URL
+HTTPS directa del archivo al generador:
 
 ```powershell
 python -m pip install -r requirements.txt
-python tools\generar_qr.py --url "https://tu-dominio/app-release.apk"
+python tools\generar_qr.py --url "https://tu-dominio/app-release.apk" --output "public\WaterEject_QR.png"
 ```
 
-El script crea `WaterEject_QR.png`. No se incluye un QR de ejemplo: el QR real
-solo puede generarse cuando exista una URL pública del APK.
+El script crea el QR PNG indicado.
 
 ## Publicar código y APK con GitHub y Vercel
 
 El repositorio incluye `public\index.html` para la página de descarga,
-`public\app-release.apk` para el APK y `vercel.json` con la carpeta de salida
-estática. Crea un repositorio público en GitHub, sube este proyecto y, en Vercel,
-importa ese repositorio. Usa la carpeta `public` como directorio de salida y
-despliega. La página incluirá el botón para descargar el APK.
+`public\app-release.apk` para el APK, `public\WaterEject_QR.png` para su QR y
+`vercel.json` con la carpeta de salida estática. En Vercel usa el preset `Other`
+y la carpeta `public` como directorio de salida. La página incluye el botón
+para descargar el APK y el código QR.
 
-Cuando Vercel proporcione la URL pública final, genera el QR apuntando
-directamente al APK, sustituyendo `https://TU-PROYECTO.vercel.app` por esa URL:
-
-```powershell
-python tools\generar_qr.py --url "https://TU-PROYECTO.vercel.app/app-release.apk" --output "public\WaterEject_QR.png"
-```
-
-Para publicar una versión nueva, reemplaza `public\app-release.apk`, actualiza
-el QR con la URL estable de Vercel y sube los cambios a GitHub.
+Para publicar una versión nueva, compila el APK, reemplaza
+`public\app-release.apk` y sube los cambios a GitHub. El QR no necesita
+regenerarse mientras se mantenga el dominio de Vercel.
