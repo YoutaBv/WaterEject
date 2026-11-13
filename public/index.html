@@ -65,6 +65,21 @@
         background: #0a99bd;
       }
 
+      .qr-code {
+        display: block;
+        width: min(220px, 100%);
+        height: auto;
+        margin: 20px auto 12px;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 12px;
+        background: white;
+      }
+
+      .qr-download {
+        color: #73d8ed;
+      }
+
       .notice {
         margin-bottom: 0;
         font-size: 0.9rem;
@@ -78,6 +93,17 @@
       <p>Aplicación para Android · versión 1.0</p>
       <a class="download" href="/app-release.apk" download>
         Descargar APK
+      </a>
+      <img
+        class="qr-code"
+        src="/WaterEject_QR.png"
+        alt="Código QR para descargar directamente el APK de Water Eject"
+        width="220"
+        height="220"
+      >
+      <p>Escanea el código para abrir la descarga directa del APK.</p>
+      <a class="qr-download" href="/WaterEject_QR.png" download>
+        Descargar código QR
       </a>
       <p class="notice">
         El tono puede ayudar a mover gotas superficiales, pero no garantiza
